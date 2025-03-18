@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Button, Container, IconButton, Box, useScrollTrigger, Slide } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Container, IconButton, Box, useScrollTrigger, Slide, Tooltip } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 const HideOnScroll = ({ children }) => {
   const trigger = useScrollTrigger();
@@ -92,7 +94,7 @@ const Navbar = ({ toggleTheme, mode }) => {
             </Typography>
 
             {/* Desktop Menu */}
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
               {navItems.map((item) => (
                 <Button
                   key={item.id}
@@ -115,13 +117,47 @@ const Navbar = ({ toggleTheme, mode }) => {
                   {item.label}
                 </Button>
               ))}
-              <IconButton onClick={toggleTheme} color="inherit" sx={{ ml: 1 }}>
-                {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-              </IconButton>
+              
+              {/* Theme Toggle Button - Desktop */}
+              <Tooltip title={`Switch to ${mode === 'light' ? 'Dark' : 'Light'} Mode`}>
+                <Button
+                  onClick={toggleTheme}
+                  variant="outlined"
+                  color="inherit"
+                  startIcon={mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                  sx={{
+                    borderRadius: '20px',
+                    ml: 2,
+                    px: 2,
+                    borderColor: 'primary.main',
+                    '&:hover': {
+                      borderColor: 'primary.main',
+                      backgroundColor: 'action.hover',
+                    }
+                  }}
+                >
+                  {mode === 'dark' ? 'Light' : 'Dark'} Mode
+                </Button>
+              </Tooltip>
             </Box>
 
             {/* Mobile Menu Button */}
-            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
+              {/* Theme Toggle Button - Mobile */}
+              <IconButton
+                onClick={toggleTheme}
+                color="inherit"
+                sx={{
+                  backgroundColor: 'action.selected',
+                  borderRadius: '12px',
+                  '&:hover': {
+                    backgroundColor: 'action.hover',
+                  }
+                }}
+              >
+                {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+              
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -157,13 +193,6 @@ const Navbar = ({ toggleTheme, mode }) => {
                 {item.label}
               </Button>
             ))}
-            <Button
-              onClick={toggleTheme}
-              startIcon={mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-              sx={{ width: '100%', justifyContent: 'center', py: 1 }}
-            >
-              {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
-            </Button>
           </Box>
         </Container>
       </AppBar>
