@@ -9,6 +9,7 @@ import About from './pages/About';
 import Skills from './pages/Skills';
 import Projects from './pages/Projects';
 import SEO from './components/SEO';
+import FloatingMenu from './components/FloatingMenu';
 import { Box } from '@mui/material';
 
 function App() {
@@ -30,6 +31,27 @@ function App() {
     },
     typography: {
       fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      h1: {
+        fontWeight: 700,
+        fontSize: '3.5rem',
+        '@media (max-width:600px)': {
+          fontSize: '2.5rem',
+        },
+      },
+      h2: {
+        fontWeight: 600,
+        fontSize: '2.5rem',
+        '@media (max-width:600px)': {
+          fontSize: '2rem',
+        },
+      },
+      h3: {
+        fontWeight: 600,
+        fontSize: '2rem',
+        '@media (max-width:600px)': {
+          fontSize: '1.75rem',
+        },
+      },
     },
     shape: {
       borderRadius: 12,
@@ -41,6 +63,7 @@ function App() {
             borderRadius: 8,
             textTransform: 'none',
             fontWeight: 500,
+            padding: '8px 16px',
           },
         },
       },
@@ -48,6 +71,26 @@ function App() {
         styleOverrides: {
           root: {
             backgroundImage: 'none',
+          },
+        },
+      },
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            scrollBehavior: 'smooth',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: mode === 'light' ? '#f1f1f1' : '#2d2d2d',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: mode === 'light' ? '#888' : '#555',
+              borderRadius: '4px',
+              '&:hover': {
+                background: mode === 'light' ? '#555' : '#777',
+              },
+            },
           },
         },
       },
@@ -69,7 +112,7 @@ function App() {
         />
         <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
           <Navbar toggleTheme={toggleTheme} mode={mode} />
-          <Box component="main" sx={{ flexGrow: 1, scrollBehavior: 'smooth' }}>
+          <Box component="main" sx={{ flexGrow: 1 }}>
             <section id="home">
               <Home />
             </section>
@@ -84,6 +127,7 @@ function App() {
             </section>
           </Box>
           <Footer />
+          <FloatingMenu toggleTheme={toggleTheme} mode={mode} />
         </Box>
       </ThemeProvider>
     </HelmetProvider>
