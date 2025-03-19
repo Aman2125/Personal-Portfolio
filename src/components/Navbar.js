@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Button, Container, IconButton, Box, useScrollTrigger, Slide, Tooltip } from '@mui/material';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  IconButton,
+  Box,
+  useTheme,
+  Tooltip,
+  useMediaQuery,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Container,
+  Typography,
+  Slide,
+  useScrollTrigger
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import CloseIcon from '@mui/icons-material/Close';
 
-const HideOnScroll = ({ children }) => {
+function HideOnScroll(props) {
+  const { children } = props;
   const trigger = useScrollTrigger();
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -16,7 +32,7 @@ const HideOnScroll = ({ children }) => {
   );
 };
 
-const Navbar = ({ toggleTheme, mode }) => {
+function Navbar({ toggleTheme, mode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 

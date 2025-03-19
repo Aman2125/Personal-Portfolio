@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Skills from './pages/Skills';
 import Projects from './pages/Projects';
+import SEO from './components/SEO';
 import { Box } from '@mui/material';
 
 function App() {
@@ -57,27 +59,34 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <Navbar toggleTheme={toggleTheme} mode={mode} />
-        <Box component="main" sx={{ flexGrow: 1, scrollBehavior: 'smooth' }}>
-          <section id="home">
-            <Home />
-          </section>
-          <section id="about">
-            <About />
-          </section>
-          <section id="skills">
-            <Skills />
-          </section>
-          <section id="projects">
-            <Projects />
-          </section>
+    <HelmetProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SEO 
+          title="Home"
+          description="Full Stack Developer Portfolio showcasing modern web applications and technical expertise"
+          image="https://via.placeholder.com/1200x630"
+        />
+        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <Navbar toggleTheme={toggleTheme} mode={mode} />
+          <Box component="main" sx={{ flexGrow: 1, scrollBehavior: 'smooth' }}>
+            <section id="home">
+              <Home />
+            </section>
+            <section id="about">
+              <About />
+            </section>
+            <section id="skills">
+              <Skills />
+            </section>
+            <section id="projects">
+              <Projects />
+            </section>
+          </Box>
+          <Footer />
         </Box>
-        <Footer />
-      </Box>
-    </ThemeProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 }
 
