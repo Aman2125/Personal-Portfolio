@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Skills from './pages/Skills';
@@ -58,9 +59,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ minHeight: '100vh' }}>
+      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar toggleTheme={toggleTheme} mode={mode} />
-        <Box component="main" sx={{ scrollBehavior: 'smooth' }}>
+        <Box component="main" sx={{ flexGrow: 1, scrollBehavior: 'smooth' }}>
           <section id="home">
             <Home />
           </section>
@@ -74,6 +75,7 @@ function App() {
             <Projects />
           </section>
         </Box>
+        <Footer />
       </Box>
     </ThemeProvider>
   );
