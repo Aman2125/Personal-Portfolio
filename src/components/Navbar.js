@@ -122,19 +122,18 @@ const Navbar = ({ toggleTheme, mode }) => {
               <Tooltip title={`Switch to ${mode === 'light' ? 'Dark' : 'Light'} Mode`}>
                 <Button
                   onClick={toggleTheme}
-                  variant="outlined"
-                  color="inherit"
-                  startIcon={mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                  variant="contained"
                   sx={{
                     borderRadius: '20px',
                     ml: 2,
                     px: 2,
-                    borderColor: 'primary.main',
+                    backgroundColor: mode === 'light' ? 'rgba(0, 0, 0, 0.8)' : 'primary.main',
+                    color: mode === 'light' ? '#fff' : 'inherit',
                     '&:hover': {
-                      borderColor: 'primary.main',
-                      backgroundColor: 'action.hover',
+                      backgroundColor: mode === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'primary.dark',
                     }
                   }}
+                  startIcon={mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
                 >
                   {mode === 'dark' ? 'Light' : 'Dark'} Mode
                 </Button>
@@ -146,12 +145,12 @@ const Navbar = ({ toggleTheme, mode }) => {
               {/* Theme Toggle Button - Mobile */}
               <IconButton
                 onClick={toggleTheme}
-                color="inherit"
                 sx={{
-                  backgroundColor: 'action.selected',
+                  backgroundColor: mode === 'light' ? 'rgba(0, 0, 0, 0.8)' : 'action.selected',
+                  color: mode === 'light' ? '#fff' : 'inherit',
                   borderRadius: '12px',
                   '&:hover': {
-                    backgroundColor: 'action.hover',
+                    backgroundColor: mode === 'light' ? 'rgba(0, 0, 0, 0.9)' : 'action.hover',
                   }
                 }}
               >
