@@ -8,7 +8,7 @@ const About = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
       <Typography variant="h3" component="h1" gutterBottom align="center">
-        About Me
+         More Description
       </Typography>
       
       <Grid container spacing={4} sx={{ mt: 4 }}>
