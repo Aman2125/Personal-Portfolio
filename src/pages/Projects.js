@@ -1,69 +1,309 @@
-import React from 'react';
-import { Container, Typography, Grid, useTheme } from '@mui/material';
-import Interactive3DCard from '../components/Interactive3DCard';
-import AnimatedSection from '../components/AnimatedSection';
+import React, { useState } from 'react';
+import { Box, Container, Typography, Grid, useTheme, IconButton, Chip } from '@mui/material';
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LaunchIcon from '@mui/icons-material/Launch';
+import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 
-const projects = [
-  {
-    title: 'E-Commerce Platform',
-    description: 'A full-stack e-commerce platform built with React, Node.js, and MongoDB. Features include user authentication, product management, and payment integration.',
-    image: 'https://via.placeholder.com/400x200',
-    github: '#',
-    demo: '#',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express']
-  },
-  {
-    title: 'Task Management App',
-    description: 'A collaborative task management application with real-time updates using Socket.IO. Includes features like task assignment, progress tracking, and team chat.',
-    image: 'https://via.placeholder.com/400x200',
-    github: '#',
-    demo: '#',
-    technologies: ['React', 'Socket.IO', 'Node.js', 'PostgreSQL']
-  },
-  {
-    title: 'Weather Dashboard',
-    description: 'A weather dashboard that displays current weather conditions and forecasts for multiple cities. Integrates with OpenWeatherMap API.',
-    image: 'https://via.placeholder.com/400x200',
-    github: '#',
-    demo: '#',
-    technologies: ['React', 'Material-UI', 'OpenWeatherMap API']
-  }
-];
+const ProjectCard = ({ project, index }) => {
+  const theme = useTheme();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rotateX = useTransform(y, [-100, 100], [15, -15]);
+  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct * 100);
+    y.set(yPct * 100);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+    setIsHovered(false);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.2 }}
+      viewport={{ once: true, margin: "-100px" }}
+      style={{
+        perspective: 2000,
+      }}
+    >
+      <motion.div
+        style={{
+          x,
+          y,
+          rotateX,
+          rotateY,
+          z: 100,
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onHoverStart={() => setIsHovered(true)}
+        onHoverEnd={() => setIsHovered(false)}
+        whileHover={{ scale: 1.02 }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
+          velocity: 0.5
+        }}
+      >
+        <Box
+          sx={{
+            p: 3,
+            height: '100%',
+            background: theme.palette.mode === 'light'
+              ? 'rgba(255, 255, 255, 0.9)'
+              : 'rgba(18, 18, 18, 0.8)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: 4,
+            overflow: 'hidden',
+            boxShadow: theme.palette.mode === 'light'
+              ? '0 4px 30px rgba(0, 0, 0, 0.1)'
+              : '0 4px 30px rgba(0, 0, 0, 0.3)',
+            border: '1px solid',
+            borderColor: theme.palette.mode === 'light'
+              ? 'rgba(255, 255, 255, 0.3)'
+              : 'rgba(255, 255, 255, 0.1)',
+            position: 'relative',
+            transformStyle: 'preserve-3d',
+          }}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, #2196f3, #f50057)',
+            }}
+          />
+          
+          <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <FolderOpenIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
+            <Box>
+              <IconButton
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="small"
+                sx={{ mr: 1 }}
+              >
+                <GitHubIcon />
+              </IconButton>
+              {project.demo && (
+                <IconButton
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  size="small"
+                >
+                  <LaunchIcon />
+                </IconButton>
+              )}
+            </Box>
+          </Box>
+
+          <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
+            {project.title}
+          </Typography>
+
+          <Typography variant="body1" color="text.secondary" paragraph>
+            {project.description}
+          </Typography>
+
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 'auto' }}>
+            {project.technologies.map((tech, i) => (
+              <Chip
+                key={i}
+                label={tech}
+                size="small"
+                sx={{
+                  background: theme.palette.mode === 'light'
+                    ? 'rgba(0, 0, 0, 0.08)'
+                    : 'rgba(255, 255, 255, 0.08)',
+                  '&:hover': {
+                    background: theme.palette.mode === 'light'
+                      ? 'rgba(0, 0, 0, 0.12)'
+                      : 'rgba(255, 255, 255, 0.12)',
+                  },
+                }}
+              />
+            ))}
+          </Box>
+
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: `radial-gradient(circle at ${x.get()}px ${y.get()}px, rgba(255,255,255,0.1) 0%, transparent 50%)`,
+                  pointerEvents: 'none',
+                }}
+              />
+            )}
+          </AnimatePresence>
+        </Box>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const Projects = () => {
   const theme = useTheme();
 
+  const projects = [
+    {
+      title: 'E-commerce Platform',
+      description: 'A full-stack e-commerce platform with real-time inventory management, secure payments, and an intuitive admin dashboard.',
+      technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+      github: 'https://github.com/yourusername/ecommerce',
+      demo: 'https://demo-ecommerce.com'
+    },
+    {
+      title: 'AI Chat Application',
+      description: 'Real-time chat application powered by AI for smart responses and language translation features.',
+      technologies: ['Next.js', 'OpenAI API', 'WebSocket', 'PostgreSQL'],
+      github: 'https://github.com/yourusername/ai-chat',
+      demo: 'https://ai-chat-demo.com'
+    },
+    {
+      title: 'Task Management System',
+      description: 'Collaborative task management system with real-time updates, file sharing, and automated workflows.',
+      technologies: ['Vue.js', 'Firebase', 'TypeScript', 'Tailwind'],
+      github: 'https://github.com/yourusername/task-manager',
+      demo: 'https://task-manager-demo.com'
+    },
+    {
+      title: 'Portfolio Website',
+      description: 'Modern portfolio website with interactive UI elements, animations, and responsive design.',
+      technologies: ['React', 'Material-UI', 'Framer Motion'],
+      github: 'https://github.com/yourusername/portfolio',
+      demo: 'https://your-portfolio.com'
+    },
+    {
+      title: 'Weather Dashboard',
+      description: 'Real-time weather dashboard with interactive maps, forecasts, and weather alerts.',
+      technologies: ['React', 'D3.js', 'Weather API', 'Leaflet'],
+      github: 'https://github.com/yourusername/weather-app',
+      demo: 'https://weather-dashboard-demo.com'
+    },
+    {
+      title: 'Social Media Analytics',
+      description: 'Analytics dashboard for social media metrics with data visualization and reporting features.',
+      technologies: ['React', 'Redux', 'Chart.js', 'Node.js'],
+      github: 'https://github.com/yourusername/social-analytics',
+      demo: 'https://social-analytics-demo.com'
+    }
+  ];
+
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <AnimatedSection>
-        <Typography
-          variant="h3"
-          component="h1"
-          gutterBottom
-          align="center"
-          sx={{
-            fontWeight: 700,
-            mb: 6,
-            background: theme.palette.mode === 'light'
-              ? 'linear-gradient(45deg, #2196f3, #f50057)'
-              : 'linear-gradient(45deg, #90caf9, #f48fb1)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            color: 'transparent',
-          }}
+    <Box
+      sx={{
+        py: 12,
+        background: theme.palette.mode === 'light'
+          ? 'linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%)'
+          : 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Background Gradient Orbs */}
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '40%',
+          height: '40%',
+          background: theme.palette.primary.main,
+          filter: 'blur(150px)',
+          opacity: theme.palette.mode === 'light' ? 0.1 : 0.15,
+          top: '-10%',
+          right: '-10%',
+          borderRadius: '50%',
+          animation: 'move 10s infinite alternate',
+          '@keyframes move': {
+            '0%': { transform: 'translate(0, 0)' },
+            '100%': { transform: 'translate(-50px, 50px)' },
+          },
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '40%',
+          height: '40%',
+          background: theme.palette.secondary.main,
+          filter: 'blur(150px)',
+          opacity: theme.palette.mode === 'light' ? 0.1 : 0.15,
+          bottom: '-10%',
+          left: '-10%',
+          borderRadius: '50%',
+          animation: 'move2 8s infinite alternate',
+          '@keyframes move2': {
+            '0%': { transform: 'translate(0, 0)' },
+            '100%': { transform: 'translate(50px, -50px)' },
+          },
+        }}
+      />
+
+      <Container maxWidth="lg">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: "-100px" }}
         >
-          Featured Projects
-        </Typography>
+          <Typography
+            variant="h3"
+            align="center"
+            gutterBottom
+            sx={{
+              fontWeight: 700,
+              mb: 8,
+              background: theme.palette.mode === 'light'
+                ? 'linear-gradient(45deg, #2196f3, #f50057)'
+                : 'linear-gradient(45deg, #90caf9, #f48fb1)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              color: 'transparent',
+            }}
+          >
+            Featured Projects
+          </Typography>
+        </motion.div>
 
         <Grid container spacing={4}>
           {projects.map((project, index) => (
-            <Grid item key={index} xs={12} md={6} lg={4}>
-              <Interactive3DCard project={project} />
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <ProjectCard project={project} index={index} />
             </Grid>
           ))}
         </Grid>
-      </AnimatedSection>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 
