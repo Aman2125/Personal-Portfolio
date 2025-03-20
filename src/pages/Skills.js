@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Container, Typography, Grid, useTheme, LinearProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 import CodeIcon from '@mui/icons-material/Code';
@@ -8,13 +8,15 @@ import BrushIcon from '@mui/icons-material/Brush';
 
 const SkillCategory = ({ title, skills, icon, delay }) => {
   const theme = useTheme();
+  const [hoveredSkill, setHoveredSkill] = useState(null);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ duration: 0.8, delay }}
       viewport={{ once: true, margin: "-100px" }}
+      whileHover={{ scale: 1.01 }}
     >
       <Box
         sx={{
@@ -34,6 +36,12 @@ const SkillCategory = ({ title, skills, icon, delay }) => {
             : 'rgba(255, 255, 255, 0.1)',
           position: 'relative',
           overflow: 'hidden',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            boxShadow: theme.palette.mode === 'light'
+              ? '0 8px 40px rgba(0, 0, 0, 0.15)'
+              : '0 8px 40px rgba(0, 0, 0, 0.5)',
+          },
           '&::before': {
             content: '""',
             position: 'absolute',
@@ -45,47 +53,88 @@ const SkillCategory = ({ title, skills, icon, delay }) => {
           }
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-          <Box
-            sx={{
-              width: 50,
-              height: 50,
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: theme.palette.mode === 'light'
-                ? 'linear-gradient(45deg, #2196f3, #f50057)'
-                : 'linear-gradient(45deg, #90caf9, #f48fb1)',
-              boxShadow: theme.palette.mode === 'light'
-                ? '0 4px 8px rgba(0,0,0,0.1)'
-                : '0 4px 8px rgba(0,0,0,0.4)',
-              mr: 2
-            }}
-          >
-            {icon}
+        <motion.div
+          initial={false}
+          animate={{
+            scale: [1, 1.05, 1],
+            transition: { duration: 0.5 }
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+            <Box
+              sx={{
+                width: 50,
+                height: 50,
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: theme.palette.mode === 'light'
+                  ? 'linear-gradient(45deg, #2196f3, #f50057)'
+                  : 'linear-gradient(45deg, #90caf9, #f48fb1)',
+                boxShadow: theme.palette.mode === 'light'
+                  ? '0 4px 8px rgba(0,0,0,0.1)'
+                  : '0 4px 8px rgba(0,0,0,0.4)',
+                mr: 2,
+                transition: 'transform 0.3s ease',
+                '&:hover': {
+                  transform: 'rotate(10deg)',
+                }
+              }}
+            >
+              {icon}
+            </Box>
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>
+              {title}
+            </Typography>
           </Box>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            {title}
-          </Typography>
-        </Box>
+        </motion.div>
 
         <Box sx={{ mt: 2 }}>
           {skills.map((skill, index) => (
-            <Box key={skill.name} sx={{ mb: 3, position: 'relative' }}>
+            <Box 
+              key={skill.name} 
+              sx={{ mb: 3, position: 'relative' }}
+              onMouseEnter={() => setHoveredSkill(skill.name)}
+              onMouseLeave={() => setHoveredSkill(null)}
+            >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                  {skill.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {skill.level}%
-                </Typography>
+                <motion.div
+                  animate={{
+                    scale: hoveredSkill === skill.name ? 1.05 : 1,
+                    color: hoveredSkill === skill.name 
+                      ? theme.palette.primary.main 
+                      : theme.palette.text.primary
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                    {skill.name}
+                  </Typography>
+                </motion.div>
+                <motion.div
+                  animate={{
+                    scale: hoveredSkill === skill.name ? 1.05 : 1,
+                    color: hoveredSkill === skill.name 
+                      ? theme.palette.primary.main 
+                      : theme.palette.text.secondary
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Typography variant="body2">
+                    {skill.level}%
+                  </Typography>
+                </motion.div>
               </Box>
               <Box sx={{ position: 'relative', height: '8px' }}>
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: `${skill.level}%` }}
-                  transition={{ duration: 1, delay: 0.2 + index * 0.1 }}
+                  transition={{ 
+                    duration: 1.2,
+                    delay: 0.2 + index * 0.15,
+                    ease: [0.6, 0.05, -0.01, 0.9]
+                  }}
                   viewport={{ once: true }}
                 >
                   <LinearProgress
@@ -98,10 +147,13 @@ const SkillCategory = ({ title, skills, icon, delay }) => {
                         ? 'rgba(0,0,0,0.08)'
                         : 'rgba(255,255,255,0.08)',
                       '& .MuiLinearProgress-bar': {
-                        background: theme.palette.mode === 'light'
+                        background: hoveredSkill === skill.name
                           ? 'linear-gradient(90deg, #2196f3, #f50057)'
-                          : 'linear-gradient(90deg, #90caf9, #f48fb1)',
+                          : theme.palette.mode === 'light'
+                            ? 'linear-gradient(90deg, #2196f3, #90caf9)'
+                            : 'linear-gradient(90deg, #90caf9, #64b5f6)',
                         borderRadius: '4px',
+                        transition: 'all 0.3s ease',
                       },
                     }}
                   />
