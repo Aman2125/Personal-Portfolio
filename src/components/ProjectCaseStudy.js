@@ -54,6 +54,7 @@ const ProjectCaseStudy = ({ open, onClose, project }) => {
         onClose={onClose}
         maxWidth="md"
         fullWidth
+        scroll="paper"
         PaperProps={{
           sx: {
             borderRadius: 2,
@@ -61,7 +62,25 @@ const ProjectCaseStudy = ({ open, onClose, project }) => {
               ? 'rgba(255, 255, 255, 0.9)'
               : 'rgba(18, 18, 18, 0.9)',
             backdropFilter: 'blur(10px)',
-            overflow: 'hidden',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: 'transparent',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: theme.palette.mode === 'light'
+                ? 'rgba(0, 0, 0, 0.2)'
+                : 'rgba(255, 255, 255, 0.2)',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              background: theme.palette.mode === 'light'
+                ? 'rgba(0, 0, 0, 0.3)'
+                : 'rgba(255, 255, 255, 0.3)',
+            },
           }
         }}
       >
@@ -76,22 +95,34 @@ const ProjectCaseStudy = ({ open, onClose, project }) => {
               right: 0,
               height: '4px',
               background: 'linear-gradient(90deg, #2196f3, #f50057)',
+              zIndex: 1,
             }
           }}
         >
           <IconButton
             onClick={onClose}
             sx={{
-              position: 'absolute',
-              right: 8,
+              position: 'sticky',
               top: 8,
+              right: 8,
+              float: 'right',
+              zIndex: 2,
               color: theme.palette.grey[500],
+              background: theme.palette.mode === 'light'
+                ? 'rgba(255, 255, 255, 0.9)'
+                : 'rgba(18, 18, 18, 0.9)',
+              backdropFilter: 'blur(10px)',
+              '&:hover': {
+                background: theme.palette.mode === 'light'
+                  ? 'rgba(0, 0, 0, 0.08)'
+                  : 'rgba(255, 255, 255, 0.08)',
+              },
             }}
           >
             <CloseIcon />
           </IconButton>
 
-          <DialogContent>
+          <DialogContent sx={{ p: 4, pt: 2 }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -212,16 +243,25 @@ const ProjectCaseStudy = ({ open, onClose, project }) => {
                 </Grid>
               </Grid>
 
-              <Stepper orientation="vertical">
+              <Stepper orientation="vertical" sx={{ mt: 4 }}>
                 {steps.map((step, index) => (
-                  <Step key={step.label} active={true}>
+                  <Step key={step.label} active={true} expanded>
                     <StepLabel>
                       <Typography variant="h6" sx={{ fontWeight: 600 }}>
                         {step.label}
                       </Typography>
                     </StepLabel>
                     <StepContent>
-                      <Typography variant="body1" color="text.secondary" sx={{ mt: 1, mb: 2 }}>
+                      <Typography 
+                        variant="body1" 
+                        color="text.secondary" 
+                        sx={{ 
+                          mt: 1, 
+                          mb: 2,
+                          whiteSpace: 'pre-wrap',
+                          lineHeight: 1.6
+                        }}
+                      >
                         {step.description}
                       </Typography>
                     </StepContent>

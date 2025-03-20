@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Container, Typography, Grid, useTheme, IconButton, Chip } from '@mui/material';
-import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+import { Box, Container, Typography, Grid, useTheme, Chip, IconButton } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LaunchIcon from '@mui/icons-material/Launch';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 import ProjectCaseStudy from '../components/ProjectCaseStudy';
 
 const ProjectCard = ({ project, index }) => {
@@ -95,8 +94,7 @@ const ProjectCard = ({ project, index }) => {
             }}
           />
           
-          <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <FolderOpenIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
+          <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             <Box>
               <IconButton
                 href={project.github}
@@ -303,8 +301,7 @@ const Projects = () => {
                   }}
                 />
                 
-                <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <FolderOpenIcon sx={{ fontSize: 40, color: theme.palette.primary.main }} />
+                <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                   <Box>
                     <IconButton
                       href={project.github}
