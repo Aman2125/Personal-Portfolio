@@ -20,7 +20,7 @@ const About = () => {
                 Developer
               </Typography>
               <Typography align="center">
-                Passionate about creating clean, efficient, and user-friendly applications
+                Passionate about creating clean, efficient, and user-friendly applications.
               </Typography>
             </Box>
           </Paper>
@@ -34,7 +34,7 @@ const About = () => {
                 Education
               </Typography>
               <Typography align="center">
-                Bachelor's in Information Technology with focus on web technologies
+                Bachelor's in Information Technology.
               </Typography>
             </Box>
           </Paper>
@@ -48,7 +48,7 @@ const About = () => {
                 Experience
               </Typography>
               <Typography align="center">
-                3+ years of experience in full-stack development
+                1+ years of experience in full-stack development
               </Typography>
             </Box>
           </Paper>
@@ -61,7 +61,7 @@ const About = () => {
         </Typography>
         <Typography paragraph>
           I am a passionate full-stack developer with a strong foundation in modern web technologies.
-          My journey in software development began during my university years, where I discovered my
+          My journey in software development began during my college years, where I discovered my
           love for creating innovative solutions to real-world problems.
         </Typography>
         <Typography paragraph>
