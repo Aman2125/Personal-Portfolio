@@ -66,7 +66,7 @@ const Footer = () => {
             </Typography>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <IconButton
-                href="https://github.com"
+                href="https://github.com/Aman2125"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{
@@ -81,7 +81,7 @@ const Footer = () => {
                 <GitHubIcon />
               </IconButton>
               <IconButton
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/aman-kumar-gupta-910041214?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{
@@ -96,7 +96,7 @@ const Footer = () => {
                 <LinkedInIcon />
               </IconButton>
               <IconButton
-                href="https://twitter.com"
+                href="https://x.com/Aman_gupta045?t=xOHClh_8W1WtNOWmMo3hBg&s=09"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{
@@ -111,7 +111,7 @@ const Footer = () => {
                 <TwitterIcon />
               </IconButton>
               <IconButton
-                href="mailto:your.email@example.com"
+                href="amandev8864@gmail.com"
                 sx={{
                   backgroundColor: 'action.hover',
                   transition: 'transform 0.2s',
